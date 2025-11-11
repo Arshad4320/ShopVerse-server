@@ -1,18 +1,23 @@
-import express from "express";
-import type { Application, Request, Response } from "express";
-import cors from "cors";
+import express, { Application, Request, Response } from 'express'
 
-const app: Application = express();
+import errorHandler, { notfoundandler } from './middleware/errorHandler'
+import handleValidationError from './middleware/handleMongooseValidationError'
+import router from './router/router'
+import cors from 'cors'
+const app: Application = express()
 
-app.use(cors());
-app.use(express.json());
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).send({
-    success: true,
-    message: "Shop Verse Server Is Running",
-  });
-});
+app.use(cors())
+app.use(express.json())
 
-// app.use("/api/v1", router);
+app.get('/', (req: Request, res: Response) => {
+  res
+    .status(200)
+    .send({ success: true, message: 'Shop verse Server Is Running' })
+})
+app.use('/api/v1', router)
+app.use(notfoundandler)
 
-export default app;
+app.use(errorHandler)
+app.use(handleValidationError)
+
+export default app
