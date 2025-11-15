@@ -91,7 +91,7 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
-const ProductController = {
+export const ProductController = {
   createProduct,
   getProducts,
   getSingleProduct,
