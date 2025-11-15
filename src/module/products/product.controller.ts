@@ -1,10 +1,24 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
+import { uploadToCloudinary } from "../../utilits/cloudinary";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const result = await ProductServices.createProduct(payload);
+
+    let imageUrl: string | undefined;
+    if (req.file) {
+      imageUrl = await uploadToCloudinary(
+        req.file.buffer,
+        req.file.originalname
+      );
+    }
+    const updatedPayload = {
+      ...payload,
+      image: imageUrl,
+    };
+
+    const result = await ProductServices.createProduct(updatedPayload);
     res.status(200).json({
       success: true,
       message: "product created successfully",
