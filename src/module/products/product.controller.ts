@@ -17,12 +17,7 @@ const createProduct = async (req: Request, res: Response) => {
 const getProducts = async (req: Request, res: Response) => {
   try {
     const result = await ProductServices.getProducts();
-    if (!result) {
-      return res.status(404).json({
-        success: false,
-        message: "product is not found",
-      });
-    }
+
     res.status(200).json({
       success: true,
       message: "data is retrived successfully",
