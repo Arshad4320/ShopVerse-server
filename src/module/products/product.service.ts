@@ -24,9 +24,11 @@ const getSingleProduct = async (id: string) => {
     console.log(err);
   }
 };
-const updateProduct = async (id: string) => {
+const updateProduct = async (id: string, payload: IProduct) => {
   try {
-    const result = await ProductSchema.findByIdAndUpdate(id);
+    const result = await ProductSchema.findByIdAndUpdate(id, payload, {
+      new: true,
+    });
     return result;
   } catch (err) {
     console.log(err);
