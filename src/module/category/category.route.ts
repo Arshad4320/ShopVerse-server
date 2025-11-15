@@ -4,7 +4,7 @@ import { upload } from "../../middleware/uploade";
 const router = express.Router();
 
 router.post(
-  "/create-category",
+  "/category-create",
   upload.single("images"),
   CategoryController.createCategory
 );

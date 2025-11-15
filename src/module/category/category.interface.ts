@@ -1,5 +1,5 @@
 export interface ICategory {
   name: string;
-  details: string;
-  image: string;
+  description: string;
+  image?: string;
 }

@@ -1,9 +1,14 @@
 import express from "express";
 import { ProductController } from "./product.controller";
+import { upload } from "../../middleware/uploade";
 
 const router = express.Router();
 
-router.post("/product-create", ProductController.createProduct);
+router.post(
+  "/product-create",
+  upload.single("images"),
+  ProductController.createProduct
+);
 router.get("/products", ProductController.getProducts);
 router.get("/product/:id", ProductController.getSingleProduct);
 router.patch("/product-update/:id", ProductController.updateProduct);

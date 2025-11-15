@@ -6,12 +6,15 @@ const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
 
-    let imageUrl: string | undefined;
-    if (req.file) {
-      imageUrl = await uploadToCloudinary(
-        req.file.buffer,
-        req.file.originalname
-      );
+    const file = req.file;
+
+    let imageUrl = "";
+
+    if (file) {
+      imageUrl = (await uploadToCloudinary(
+        file.buffer,
+        file.originalname
+      )) as string;
     }
     const updatedPayload = {
       ...payload,

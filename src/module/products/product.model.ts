@@ -21,7 +21,7 @@ const ProductModel = new Schema<IProduct>(
       type: Number,
       required: true,
     },
-    details: {
+    description: {
       type: String,
       required: true,
     },
