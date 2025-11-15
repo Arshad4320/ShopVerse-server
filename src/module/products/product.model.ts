@@ -3,6 +3,11 @@ import { IProduct } from "./products.interface";
 
 const ProductModel = new Schema<IProduct>(
   {
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -11,11 +16,7 @@ const ProductModel = new Schema<IProduct>(
       type: Number,
       required: true,
     },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
+
     quantity: {
       type: Number,
       required: true,

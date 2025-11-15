@@ -6,5 +6,5 @@ export interface IProduct {
   price: number;
   quantity: number;
   image?: string;
-  category: ObjectId;
+  categoryId: ObjectId;
 }
