@@ -76,3 +76,33 @@ const deleteUser = async (userId: string) => {
     console.log(err);
   }
 };
+const selfGetUser = async (userId: string) => {
+  try {
+    return await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+  }
+};
+const selfUpdateUser = async (userId: string, payload: Partial<IUser>) => {
+  try {
+    if (payload.password) {
+      payload.password = await bcrypt.hash(payload.password, 10);
+    }
+
+    return await User.findByIdAndUpdate(userId, payload, {
+      new: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const UserServices = {
+  createUser,
+  loginUser,
+  updateUser,
+  getAllUser,
+  getSingleUser,
+  deleteUser,
+  selfGetUser,
+  selfUpdateUser,
+};
