@@ -36,9 +36,9 @@ const getAllOrderFromIntoDb = async () => {
     console.log(err);
   }
 };
-const updateOrder = async (userId: string, payload: IOrder) => {
+const updateOrder = async (orderId: string, payload: IOrder) => {
   try {
-    const result = await Order.findByIdAndUpdate(userId, payload, {
+    const result = await Order.findByIdAndUpdate(orderId, payload, {
       new: true,
     });
     return result;
