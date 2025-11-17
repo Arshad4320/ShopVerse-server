@@ -13,8 +13,9 @@ const createUser = async (payload: IUser) => {
       password: hashedPassword,
     });
     return result;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to create user");
   }
 };
 const loginUser = async (email: string, password: string) => {
@@ -33,16 +34,18 @@ const loginUser = async (email: string, password: string) => {
       { expiresIn: "7d" }
     );
     return { user, token };
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to login user");
   }
 };
 const getAllUser = async () => {
   try {
     const result = await User.find();
     return result;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to get user");
   }
 };
 
@@ -50,8 +53,9 @@ const getSingleUser = async (userId: string) => {
   try {
     const result = await User.findById(userId);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to get user");
   }
 };
 const updateUser = async (userId: string, payload: IUser) => {
@@ -63,8 +67,9 @@ const updateUser = async (userId: string, payload: IUser) => {
       new: true,
     });
     return result;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to update user");
   }
 };
 
@@ -72,8 +77,9 @@ const deleteUser = async (userId: string) => {
   try {
     const result = await User.findByIdAndDelete(userId);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to delete user");
   }
 };
 const selfGetUser = async (userId: string) => {
@@ -92,8 +98,9 @@ const selfUpdateUser = async (userId: string, payload: Partial<IUser>) => {
     return await User.findByIdAndUpdate(userId, payload, {
       new: true,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || "Failed to update profile ");
   }
 };
 export const UserServices = {

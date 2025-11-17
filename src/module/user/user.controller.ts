@@ -12,8 +12,12 @@ const createUser = async (req: Request, res: Response) => {
       message: "user created successfully",
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    console.error(err);
+    res.status(400).json({
+      success: false,
+      message: err.message || "Failed to create user",
+    });
   }
 };
 
@@ -27,8 +31,12 @@ const loginUser = async (req: Request, res: Response) => {
       message: "user login successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    res.json({
+      success: false,
+      message: err.message || "failed to login user",
+    });
   }
 };
 const getAllUser = async (req: Request, res: Response) => {
@@ -39,8 +47,12 @@ const getAllUser = async (req: Request, res: Response) => {
       message: "Users retrived successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    res.json({
+      success: false,
+      message: err.message || "failed to get user",
+    });
   }
 };
 
@@ -54,8 +66,12 @@ const getSingleUser = async (req: Request, res: Response) => {
       message: "User retrived successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    res.json({
+      success: false,
+      message: err.message || "failed to get user",
+    });
   }
 };
 const updateUser = async (req: Request, res: Response) => {
@@ -69,8 +85,12 @@ const updateUser = async (req: Request, res: Response) => {
       message: "user update successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    res.json({
+      success: false,
+      message: err.message || "failed to update user",
+    });
   }
 };
 
@@ -84,8 +104,12 @@ const deleteUser = async (req: Request, res: Response) => {
       message: "user deleted successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    res.json({
+      success: false,
+      message: err.message || "failed to delete user",
+    });
   }
 };
 const getMyProfile = async (req: AuthRequest, res: Response) => {
