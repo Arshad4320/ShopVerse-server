@@ -1,18 +1,27 @@
+import { User } from "../user/user.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
 
 const createOrder = async (userId: string, payload: IOrder) => {
   try {
-    const user = await Order.findById(userId);
+    const user = await User.findById(userId);
     if (!user) throw new Error("user not found");
     const useAddress = user.address || payload.address;
+
+    const itemsWithTotal = payload.item.map((i) => ({
+      ...i,
+      total: i.quantity * i.price,
+    }));
+    const grandTotal = itemsWithTotal.reduce((sum, i) => sum + i.total, 0);
     const orderData = {
-      user: payload.user,
-      item: payload.item,
+      user: userId,
+      item: itemsWithTotal,
       address: useAddress,
       paymentMethod: payload.paymentMethod,
       paymentStatus: payload.paymentStatus,
+      totalPrice: grandTotal,
     };
+
     const result = await Order.create(orderData);
     return result;
   } catch (err) {
