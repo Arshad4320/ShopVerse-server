@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post(
   "/product-create",
-  upload.single("images"),
+  upload.single("image"),
   ProductController.createProduct
 );
 router.get("/products", ProductController.getProducts);

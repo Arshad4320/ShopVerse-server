@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post(
   "/category-create",
-  upload.single("images"),
+  upload.single("image"),
   CategoryController.createCategory
 );
 router.get("/category", CategoryController.getCategory);
