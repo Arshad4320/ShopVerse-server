@@ -27,6 +27,7 @@ const ProductModel = new Schema<IProduct>(
     },
     image: {
       type: String,
+      required: true,
     },
   },
   {

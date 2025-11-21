@@ -67,13 +67,27 @@ const updateCategory = async (req: Request, res: Response) => {
   try {
     const categoryId = req.params.id;
     const payload = req.body;
-    if (!categoryId) {
-      return res.status(404).json({
-        success: false,
-        message: "category id is not found",
-      });
+    const file = req.file;
+
+    let imageUrl = payload.image;
+
+    if (file) {
+      imageUrl = (await uploadToCloudinary(
+        file.buffer,
+        file.originalname
+      )) as string;
     }
-    const result = await CategoryServices.updateCategory(categoryId, payload);
+
+    const updatedPayload = {
+      ...payload,
+      image: imageUrl,
+    };
+
+    const result = await CategoryServices.updateCategory(
+      categoryId!,
+      updatedPayload
+    );
+
     res.status(200).json({
       success: true,
       message: "category update successfully",
@@ -83,6 +97,7 @@ const updateCategory = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
+
 const deleteCategory = async (req: Request, res: Response) => {
   try {
     const categoryId = req.params.id;
@@ -95,7 +110,7 @@ const deleteCategory = async (req: Request, res: Response) => {
     const result = await CategoryServices.deleteCategory(categoryId);
     res.status(200).json({
       success: true,
-      message: "data deleted successfully",
+      message: "category deleted successfully",
     });
   } catch (err) {
     console.log(err);

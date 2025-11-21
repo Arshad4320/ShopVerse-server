@@ -5,11 +5,8 @@ import { uploadToCloudinary } from "../../utilits/cloudinary";
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-
     const file = req.file;
-
     let imageUrl = "";
-
     if (file) {
       imageUrl = (await uploadToCloudinary(
         file.buffer,
@@ -18,10 +15,13 @@ const createProduct = async (req: Request, res: Response) => {
     }
     const updatedPayload = {
       ...payload,
+      price: Number(payload.price),
+      quantity: Number(payload.quantity),
       image: imageUrl,
     };
 
     const result = await ProductServices.createProduct(updatedPayload);
+    console.log(result);
     res.status(200).json({
       success: true,
       message: "product created successfully",
@@ -47,6 +47,7 @@ const getProducts = async (req: Request, res: Response) => {
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
+
     if (!productId) {
       return res.status(404).json({
         success: false,
@@ -67,14 +68,33 @@ const getSingleProduct = async (req: Request, res: Response) => {
 const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
+    const payload = req.body;
+    const file = req.file;
+    let imageUrl = "";
+    if (file) {
+      imageUrl = (await uploadToCloudinary(
+        file.buffer,
+        file.originalname
+      )) as string;
+    }
+    const updatedPayload = {
+      ...payload,
+      price: Number(payload.price),
+      quantity: Number(payload.quantity),
+      image: imageUrl,
+    };
+
     if (!productId) {
       return res.status(404).json({
         success: false,
         message: "product id is not found",
       });
     }
-    const payload = req.body;
-    const result = await ProductServices.updateProduct(productId, payload);
+
+    const result = await ProductServices.updateProduct(
+      productId,
+      updatedPayload
+    );
     res.status(200).json({
       success: true,
       message: "product update successfully",
