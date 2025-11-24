@@ -21,9 +21,23 @@ const ProductModel = new Schema<IProduct>(
       type: Number,
       required: true,
     },
+    brand: {
+      type: String,
+      required: true,
+    },
+    tags: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
+    },
+    discount: {
+      type: Number,
+    },
+    discountPrice: {
+      type: Number,
     },
     image: {
       type: String,

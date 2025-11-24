@@ -1,36 +1,52 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
 import { uploadToCloudinary } from "../../utilits/cloudinary";
+import { disconnect } from "process";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     const file = req.file;
+
     let imageUrl = "";
+
+    // Upload Image
     if (file) {
       imageUrl = (await uploadToCloudinary(
         file.buffer,
         file.originalname
       )) as string;
     }
+
+    const price = Number(payload.price);
+    const discount = Number(payload.discount);
+    const quantity = Number(payload.quantity);
+
+    const discountedPrice = payload.discountPrice(
+      price - (price * discount) / 100
+    );
+
     const updatedPayload = {
       ...payload,
-      price: Number(payload.price),
-      quantity: Number(payload.quantity),
+      price,
+      quantity,
+      discount,
+      discountedPrice,
       image: imageUrl,
     };
 
     const result = await ProductServices.createProduct(updatedPayload);
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: "product created successfully",
-      data: result,
+      data: { ...result?.toObject(), discountedPrice },
     });
   } catch (err) {
     console.log(err);
   }
 };
+
 const getProducts = async (req: Request, res: Response) => {
   try {
     const result = await ProductServices.getProducts();
