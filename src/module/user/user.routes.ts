@@ -7,15 +7,12 @@ import { verifyToken } from "../../middleware/verifyToken";
 
 const router = express.Router();
 
-// PUBLIC ROUTES
 router.post("/register-user", UserController.createUser);
 router.post("/login-user", UserController.loginUser);
 
-// USER SELF ROUTES
-router.get("/me", verifyToken, UserController.getMyProfile);
-router.put("/update-me", verifyToken, UserController.updateMyProfile);
+router.get("/self-user", verifyToken, UserController.getMyProfile);
+router.patch("/self-user/update", verifyToken, UserController.updateMyProfile);
 
-// ADMIN ONLY ROUTES
 router.get(
   "/get-users",
   verifyToken,
@@ -30,7 +27,7 @@ router.get(
   UserController.getSingleUser
 );
 
-router.put(
+router.patch(
   "/update-user/:id",
   verifyToken,
   authorize("Admin"),
@@ -38,7 +35,7 @@ router.put(
 );
 
 router.delete(
-  "/:id",
+  "/delete-user/:id",
   verifyToken,
   authorize("Admin"),
   UserController.deleteUser

@@ -21,17 +21,14 @@ const createProduct = async (req: Request, res: Response) => {
     const price = Number(payload.price);
     const discount = Number(payload.discount);
     const quantity = Number(payload.quantity);
-
-    const discountedPrice = payload.discountPrice(
-      price - (price * discount) / 100
-    );
+    payload.discountPrice =
+      discount > 0 ? price - (price * discount) / 100 : price;
 
     const updatedPayload = {
       ...payload,
       price,
       quantity,
       discount,
-      discountedPrice,
       image: imageUrl,
     };
 
@@ -40,7 +37,7 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "product created successfully",
-      data: { ...result?.toObject(), discountedPrice },
+      data: result,
     });
   } catch (err) {
     console.log(err);
