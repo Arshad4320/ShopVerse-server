@@ -5,6 +5,7 @@ import { Order } from "./order.model";
 const createOrder = async (userId: string, payload: IOrder) => {
   try {
     const user = await User.findById(userId);
+
     if (!user) throw new Error("user not found");
     const useAddress = user.address || payload.address;
 

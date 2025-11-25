@@ -3,7 +3,7 @@ import { OrderServices } from "./order.services";
 
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id!;
+    const userId = req.body.user!;
     const payload = req.body;
     const result = await OrderServices.createOrder(userId, payload);
     res.json({
