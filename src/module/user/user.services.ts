@@ -21,7 +21,7 @@ const createUser = async (payload: IUser) => {
 const loginUser = async (email: string, password: string) => {
   try {
     const user = await User.findOne({ email });
-    if (!user) throw new Error("user not found");
+    if (!user) throw new Error("user not found please create account");
     const isCompare = await bcrypt.compare(password, user.password);
     if (!isCompare) throw new Error("wrong credential try again!");
     const token = jwt.sign(

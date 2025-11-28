@@ -8,10 +8,37 @@ const createProduct = async (payload: IProduct) => {
     console.log(err);
   }
 };
-const getProducts = async () => {
+const getProducts = async (query: {
+  search?: string;
+  category?: string;
+  limit: number;
+  page: number;
+}) => {
   try {
-    const result = await ProductSchema.find().populate("categoryId");
-    return result;
+    const { search, category, limit, page } = query;
+    const filter: any = {};
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, options: "i" } },
+        { category: { $regex: search, options: "i" } },
+      ];
+    }
+    if (category) {
+      filter.categoryId = category;
+    }
+    const skip = (page - 1) * limit;
+    const total = await ProductSchema.countDocuments(filter);
+    const result = await ProductSchema.find(filter)
+      .populate("categoryId")
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+    return {
+      total,
+      pages: Math.ceil(total / limit),
+      currentPage: page,
+      data: result,
+    };
   } catch (err) {
     console.log(err);
   }

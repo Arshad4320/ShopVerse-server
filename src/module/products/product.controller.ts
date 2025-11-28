@@ -46,7 +46,13 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getProducts();
+    const { search, page = 1, limit = 12, category } = req.query;
+    const result = await ProductServices.getProducts({
+      search: search as string,
+      category: category as string,
+      page: Number(page),
+      limit: Number(limit),
+    });
 
     res.status(200).json({
       success: true,

@@ -40,7 +40,10 @@ const getOrderByUser = async (userId: string) => {
 };
 const getAllOrderFromIntoDb = async () => {
   try {
-    const result = await Order.find().populate("user").populate("item.product");
+    const result = await Order.find()
+      .populate("user")
+      .populate("item.product")
+      .sort({ createdAt: -1 });
     return result;
   } catch (err) {
     console.log(err);

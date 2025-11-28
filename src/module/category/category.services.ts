@@ -36,7 +36,7 @@ const updateCategory = async (id: string, payload: ICategory) => {
 
 const deleteCategory = async (id: string) => {
   try {
-    const result = await Category.findByIdAndDelete(id);
+    const result = await Category.findByIdAndDelete(id, { new: true });
     return result;
   } catch (err) {
     console.log(err);
