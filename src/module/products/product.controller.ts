@@ -46,14 +46,19 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getProducts = async (req: Request, res: Response) => {
   try {
-    const { search, page = 1, limit = 12, category } = req.query;
-    const result = await ProductServices.getProducts({
-      search: search as string,
-      category: category as string,
-      page: Number(page),
-      limit: Number(limit),
+    const result = await ProductServices.getProducts();
+    res.status(200).json({
+      success: true,
+      message: "data is retrived successfully",
+      data: result,
     });
-
+  } catch (err) {
+    console.log(err);
+  }
+};
+const getProductsQuery = async (req: Request, res: Response) => {
+  try {
+    const result = await ProductServices.getProductsQuery(req.query);
     res.status(200).json({
       success: true,
       message: "data is retrived successfully",
@@ -144,6 +149,7 @@ const deleteProduct = async (req: Request, res: Response) => {
 
 export const ProductController = {
   createProduct,
+  getProductsQuery,
   getProducts,
   getSingleProduct,
   updateProduct,

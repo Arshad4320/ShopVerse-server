@@ -8,41 +8,49 @@ const createProduct = async (payload: IProduct) => {
     console.log(err);
   }
 };
-const getProducts = async (query: {
-  search?: string;
-  category?: string;
-  limit: number;
-  page: number;
-}) => {
+const getProducts = async () => {
   try {
-    const { search, category, limit, page } = query;
-    const filter: any = {};
+    const result = await ProductSchema.find().populate("categoryId");
+
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const getProductsQuery = async (query: any) => {
+  try {
+    const filters: any = {};
+    const { page = 1, limit = 8, search, category } = query;
     if (search) {
-      filter.$or = [
-        { name: { $regex: search, options: "i" } },
-        { category: { $regex: search, options: "i" } },
+      filters.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
       ];
     }
     if (category) {
-      filter.categoryId = category;
+      filters.categoryId = category;
     }
-    const skip = (page - 1) * limit;
-    const total = await ProductSchema.countDocuments(filter);
-    const result = await ProductSchema.find(filter)
-      .populate("categoryId")
+    const skip = (Number(page) - 1) * Number(limit);
+    const total = await ProductSchema.countDocuments(filters);
+    const result = await ProductSchema.find(filters)
       .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+      .limit(Number(limit))
+      .populate("categoryId");
+
     return {
-      total,
-      pages: Math.ceil(total / limit),
-      currentPage: page,
-      data: result,
+      result,
+      meta: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPage: Math.ceil(total / Number(limit)),
+      },
     };
   } catch (err) {
     console.log(err);
   }
 };
+
 const getSingleProduct = async (id: string) => {
   try {
     const result = await ProductSchema.findById(id).populate("categoryId");
@@ -73,6 +81,7 @@ const deleteProduct = async (id: string) => {
 export const ProductServices = {
   createProduct,
   getProducts,
+  getProductsQuery,
   getSingleProduct,
   updateProduct,
   deleteProduct,
