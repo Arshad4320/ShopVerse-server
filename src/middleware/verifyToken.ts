@@ -16,7 +16,7 @@ export const verifyToken = (
       id: string;
       role: string;
     };
-    req.user = decoded;
+    // req.user = decoded;
     next();
   } catch (err) {
     res.status(403).json({ message: "Invalid token" });

@@ -1,7 +1,7 @@
 import app from "./app";
 import config from "./config/index";
 import connectDB from "./config/db.config";
-
+import serverless from "serverless-http";
 const startServer = async () => {
   await connectDB();
   app.listen(config.port, () => {
@@ -10,3 +10,4 @@ const startServer = async () => {
 };
 
 startServer();
+export default serverless(app);
