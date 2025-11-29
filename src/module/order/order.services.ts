@@ -7,7 +7,7 @@ const createOrder = async (userId: string, payload: IOrder) => {
     const user = await User.findById(userId);
 
     if (!user) throw new Error("user not found");
-    const useAddress = user.address || payload.address;
+    const useAddress = payload.address || user.address;
 
     const itemsWithTotal = payload.item.map((i) => ({
       ...i,
@@ -51,9 +51,10 @@ const getOrdersQuery = async (query: any) => {
     const skip = Number(page - 1) * Number(limit);
     const total = await Order.countDocuments(filter);
     const result = await Order.find(filter)
+      .populate("item.product")
+      .populate("user")
       .skip(skip)
       .limit(Number(limit))
-      .populate("item.product")
       .sort({ createdAt: -1 });
     return {
       result,
@@ -89,9 +90,9 @@ const updateOrder = async (orderId: string, payload: IOrder) => {
     console.log(err);
   }
 };
-const deleteOrder = async (orderId: string) => {
+const deleteOrder = async (id: string) => {
   try {
-    const result = await Order.findByIdAndDelete(orderId);
+    const result = await Order.findByIdAndDelete(id, { new: true });
     return result;
   } catch (err) {
     console.log(err);
