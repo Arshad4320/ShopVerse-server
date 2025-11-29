@@ -35,7 +35,8 @@ const getProductsQuery = async (query: any) => {
     const result = await ProductSchema.find(filters)
       .skip(skip)
       .limit(Number(limit))
-      .populate("categoryId");
+      .populate("categoryId")
+      .sort({ createdAt: -1 });
 
     return {
       result,

@@ -40,7 +40,18 @@ const getAllOrdersFromIntoDb = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
-
+const getOrderQuery = async (req: Request, res: Response) => {
+  try {
+    const result = await OrderServices.getOrdersQuery(req.query);
+    res.json({
+      success: true,
+      message: "order retrived successfully",
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 const updateOrder = async (req: Request, res: Response) => {
   try {
     const orderId = req.params.id!;
@@ -69,6 +80,7 @@ const deleteOrder = async (req: Request, res: Response) => {
 };
 
 export const OrderController = {
+  getOrderQuery,
   createOrder,
   getOrderByUser,
   getAllOrdersFromIntoDb,

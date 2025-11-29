@@ -38,6 +38,36 @@ const getOrderByUser = async (userId: string) => {
     console.log(err);
   }
 };
+const getOrdersQuery = async (query: any) => {
+  try {
+    const { limit = 9, search = "", page = 1 } = query;
+    const filter: any = {};
+    if (search) {
+      filter.$or = [
+        { "address.name": { $regex: search, $options: "i" } },
+        { "address.phone": { $regex: search, $options: "i" } },
+      ];
+    }
+    const skip = Number(page - 1) * Number(limit);
+    const total = await Order.countDocuments(filter);
+    const result = await Order.find(filter)
+      .skip(skip)
+      .limit(Number(limit))
+      .populate("item.product")
+      .sort({ createdAt: -1 });
+    return {
+      result,
+      meta: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPage: Math.ceil(total / Number(limit)),
+      },
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
 const getAllOrderFromIntoDb = async () => {
   try {
     const result = await Order.find()
@@ -71,6 +101,7 @@ const deleteOrder = async (orderId: string) => {
 export const OrderServices = {
   createOrder,
   getOrderByUser,
+  getOrdersQuery,
   getAllOrderFromIntoDb,
   updateOrder,
   deleteOrder,
