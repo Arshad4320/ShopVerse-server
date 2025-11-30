@@ -4,7 +4,7 @@ import config from "./index";
 const connectDB = async () => {
   try {
     await mongoose.connect(config.database_url as string, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 20000,
     });
     console.log("✅ Database Connected Successfully");
   } catch (err) {
