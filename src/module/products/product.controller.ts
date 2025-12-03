@@ -22,7 +22,7 @@ const createProduct = async (req: Request, res: Response) => {
     const discount = Number(payload.discount);
     const quantity = Number(payload.quantity);
     payload.discountPrice =
-      discount > 0 ? price - (price * discount) / 100 : price;
+      discount > 0 ? price - (price * discount) / 100 : null;
 
     const updatedPayload = {
       ...payload,
