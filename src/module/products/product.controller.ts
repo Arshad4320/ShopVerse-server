@@ -6,37 +6,45 @@ import { disconnect } from "process";
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const file = req.file;
+    const files = req.files as Express.Multer.File[];
 
-    let imageUrl = "";
+    let imageUrls: string[] = [];
 
-    // Upload Image
-    if (file) {
-      imageUrl = (await uploadToCloudinary(
-        file.buffer,
-        file.originalname
-      )) as string;
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const url = (await uploadToCloudinary(
+          file.buffer,
+          file.originalname
+        )) as string;
+        imageUrls.push(url);
+      }
     }
 
     const price = Number(payload.price);
     const discount = Number(payload.discount);
     const quantity = Number(payload.quantity);
+
     payload.discountPrice =
       discount > 0 ? price - (price * discount) / 100 : null;
+
+    const sizeArray = Array.isArray(payload.size)
+      ? payload.size
+      : payload.size?.split(",").map((s: string) => s.trim());
 
     const updatedPayload = {
       ...payload,
       price,
       quantity,
       discount,
-      image: imageUrl,
+      size: sizeArray,
+      image: imageUrls,
     };
 
     const result = await ProductServices.createProduct(updatedPayload);
 
     res.status(200).json({
       success: true,
-      message: "product created successfully",
+      message: "Product created successfully",
       data: result,
     });
   } catch (err) {
@@ -93,41 +101,61 @@ const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
     const payload = req.body;
-    const file = req.file;
-    let imageUrl = "";
-    if (file) {
-      imageUrl = (await uploadToCloudinary(
-        file.buffer,
-        file.originalname
-      )) as string;
-    }
-    const updatedPayload = {
-      ...payload,
-      price: Number(payload.price),
-      quantity: Number(payload.quantity),
-      image: imageUrl,
-    };
+    const files = req.files as Express.Multer.File[];
 
     if (!productId) {
       return res.status(404).json({
         success: false,
-        message: "product id is not found",
+        message: "Product ID not found",
       });
+    }
+
+    let imageUrls: string[] = [];
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const url = (await uploadToCloudinary(
+          file.buffer,
+          file.originalname
+        )) as string;
+
+        imageUrls.push(url);
+      }
+    }
+
+    const updatedPayload: any = {
+      ...payload,
+    };
+
+    if (payload.price) updatedPayload.price = Number(payload.price);
+    if (payload.quantity) updatedPayload.quantity = Number(payload.quantity);
+    if (payload.discount) updatedPayload.discount = Number(payload.discount);
+
+    if (payload.size) {
+      updatedPayload.size = Array.isArray(payload.size)
+        ? payload.size
+        : payload.size.split(",").map((s: string) => s.trim());
+    }
+
+    if (imageUrls.length > 0) {
+      updatedPayload.image = imageUrls;
     }
 
     const result = await ProductServices.updateProduct(
       productId,
       updatedPayload
     );
+
     res.status(200).json({
       success: true,
-      message: "product update successfully",
+      message: "Product updated successfully",
       data: result,
     });
   } catch (err) {
     console.log(err);
   }
 };
+
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;

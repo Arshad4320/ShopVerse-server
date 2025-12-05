@@ -32,12 +32,17 @@ const getProductsQuery = async (query: any) => {
     }
     const skip = (Number(page) - 1) * Number(limit);
     const total = await ProductSchema.countDocuments(filters);
-    const result = await ProductSchema.find(filters)
+    const products = await ProductSchema.find(filters)
       .skip(skip)
       .limit(Number(limit))
       .populate("categoryId")
       .sort({ createdAt: -1 });
-
+    const result = products.map((item) => {
+      return {
+        ...item.toObject(),
+        stock: item.quantity > 0 ? "In Stock" : "Stock Out",
+      };
+    });
     return {
       result,
       meta: {
