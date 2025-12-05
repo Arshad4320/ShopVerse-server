@@ -22,7 +22,7 @@ const OrderSchema = new Schema<IOrder>(
       name: { type: String },
       phone: { type: String },
       upozilla: { type: String },
-      city: {
+      zilla: {
         type: String,
       },
     },

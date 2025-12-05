@@ -7,10 +7,12 @@ export interface IOrder {
     quantity: number;
     price: number;
   }[];
-  name: string;
-  phone: string;
-  upozilla: string;
-  zilla: string;
+  address: {
+    name: string;
+    phone: string;
+    upozilla: string;
+    zilla: string;
+  };
 
   paymentMethod: "COD" | "Bkash" | "Nagad" | "Card";
   paymentStatus: "Pending" | "Cancel" | "Success" | "Failed";

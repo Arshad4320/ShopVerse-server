@@ -10,21 +10,18 @@ const UserSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
     },
-
-    address: {
-      name: { type: String },
-      phone: { type: String },
-      upozilla: { type: String },
-      city: { type: String },
+    phone: {
+      type: String,
+      required: true,
     },
     userType: {
-      type: String,
-      enum: ["Admin", "User"],
+      enum: ["User", "Admin"],
       default: "User",
     },
   },
@@ -33,4 +30,4 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-export const User = model("User", UserSchema);
+export const User = model<IUser>("User", UserSchema);
