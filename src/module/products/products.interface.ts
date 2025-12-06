@@ -5,11 +5,11 @@ export interface IProduct {
   description: string;
   price: number;
   quantity: number;
-  size: string[];
+  sizes?: string[];
   brand: string;
-  tags: string;
+  tags?: string;
   discount?: number;
   discountPrice?: number;
-  image?: string[];
+  images?: string[];
   categoryId: ObjectId;
 }

@@ -27,7 +27,6 @@ const ProductModel = new Schema<IProduct>(
     },
     tags: {
       type: String,
-      required: true,
     },
     description: {
       type: String,
@@ -39,13 +38,12 @@ const ProductModel = new Schema<IProduct>(
     discountPrice: {
       type: Number,
     },
-    image: {
+    images: {
       type: [String],
       required: true,
     },
-    size: {
+    sizes: {
       type: [String],
-      required: true,
     },
   },
   {

@@ -6,6 +6,7 @@ import { disconnect } from "process";
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
+
     const files = req.files as Express.Multer.File[];
 
     let imageUrls: string[] = [];
@@ -16,6 +17,7 @@ const createProduct = async (req: Request, res: Response) => {
           file.buffer,
           file.originalname
         )) as string;
+
         imageUrls.push(url);
       }
     }
@@ -37,7 +39,7 @@ const createProduct = async (req: Request, res: Response) => {
       quantity,
       discount,
       size: sizeArray,
-      image: imageUrls,
+      images: imageUrls,
     };
 
     const result = await ProductServices.createProduct(updatedPayload);
@@ -138,7 +140,7 @@ const updateProduct = async (req: Request, res: Response) => {
     }
 
     if (imageUrls.length > 0) {
-      updatedPayload.image = imageUrls;
+      updatedPayload.images = imageUrls;
     }
 
     const result = await ProductServices.updateProduct(

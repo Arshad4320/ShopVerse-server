@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post(
   "/product-create",
-  upload.array("image", 10),
+  upload.array("images", 10),
   ProductController.createProduct
 );
 
@@ -18,7 +18,7 @@ router.get("/product/:id", ProductController.getSingleProduct);
 
 router.patch(
   "/product-update/:id",
-  upload.array("image", 5),
+  upload.array("images", 10),
   ProductController.updateProduct
 );
 

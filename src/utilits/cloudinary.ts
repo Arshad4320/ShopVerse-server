@@ -12,13 +12,16 @@ cloudinary.config({
 export const uploadToCloudinary = async (
   fileBuffer: Buffer,
   filename: string
-): Promise<string | undefined> => {
+): Promise<string> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload_stream({ public_id: `courses/${filename}` }, (error, result) => {
-        if (error) return reject(error);
-        resolve(result?.secure_url);
-      })
-      .end(fileBuffer);
+    const stream = cloudinary.uploader.upload_stream(
+      { public_id: `products/${Date.now()}-${filename}` },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result!.secure_url);
+      }
+    );
+
+    stream.end(fileBuffer);
   });
 };
