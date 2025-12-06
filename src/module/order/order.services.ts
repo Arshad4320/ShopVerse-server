@@ -7,7 +7,7 @@ const createOrder = async (userId: string, payload: IOrder) => {
     const user = await User.findById(userId);
 
     if (!user) throw new Error("user not found");
-    const useAddress = payload.address || user.address;
+    const useAddress = payload.address;
 
     const itemsWithTotal = payload.item.map((i) => ({
       ...i,

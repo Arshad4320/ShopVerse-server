@@ -16,6 +16,9 @@ const OrderSchema = new Schema<IOrder>(
         price: {
           type: Number,
         },
+        images: {
+          type: String,
+        },
       },
     ],
     address: {

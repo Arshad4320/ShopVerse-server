@@ -6,6 +6,7 @@ export interface IOrder {
     product: ObjectId;
     quantity: number;
     price: number;
+    images: string;
   }[];
   address: {
     name: string;
