@@ -19,13 +19,16 @@ const OrderSchema = new Schema<IOrder>(
         images: {
           type: String,
         },
+        sizes: {
+          type: String,
+        },
       },
     ],
     address: {
       name: { type: String },
       phone: { type: String },
-      upozilla: { type: String },
-      zilla: {
+      upozila: { type: String },
+      zila: {
         type: String,
       },
     },

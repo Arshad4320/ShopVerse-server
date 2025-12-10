@@ -4,9 +4,9 @@ import { Order } from "./order.model";
 
 const createOrder = async (userId: string, payload: IOrder) => {
   try {
-    const user = await User.findById(userId);
+    // const user = await User.findById(userId);
 
-    if (!user) throw new Error("user not found");
+    // if (!user) throw new Error("user not found");
     const useAddress = payload.address;
 
     const itemsWithTotal = payload.item.map((i) => ({

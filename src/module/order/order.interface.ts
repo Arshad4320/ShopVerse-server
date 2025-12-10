@@ -1,18 +1,19 @@
 import { ObjectId } from "mongoose";
 
 export interface IOrder {
-  user?: ObjectId;
+  user?: ObjectId | null;
   item: {
     product: ObjectId;
     quantity: number;
     price: number;
     images: string;
+    sizes: string;
   }[];
   address: {
     name: string;
     phone: string;
-    upozilla: string;
-    zilla: string;
+    upozila: string;
+    zila: string;
   };
 
   paymentMethod: "COD" | "Bkash" | "Nagad" | "Card";
