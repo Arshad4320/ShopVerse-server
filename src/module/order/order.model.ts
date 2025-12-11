@@ -28,9 +28,7 @@ const OrderSchema = new Schema<IOrder>(
       name: { type: String },
       phone: { type: String },
       upozila: { type: String },
-      zila: {
-        type: String,
-      },
+      zila: { type: String },
     },
 
     paymentMethod: {

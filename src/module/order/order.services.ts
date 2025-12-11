@@ -22,7 +22,6 @@ const createOrder = async (userId: string, payload: IOrder) => {
       paymentStatus: payload.paymentStatus,
       totalPrice: grandTotal,
     };
-
     const result = await Order.create(orderData);
     return result;
   } catch (err) {
