@@ -77,18 +77,6 @@ Backend
 
 Node.js ,Express.js (v5) ,TypeScript,MongoDB,Mongoose,Authentication & Security,JSON Web Token (JWT),bcrypt,cookie-parser,CORS,File & Image Handling,Multer,Cloudinary
 
-📂 Project Structure 
-src/
-├── modules/
-│   ├── auth
-│   ├── user
-│   ├── category
-│   ├── product
-│   └── order
-├── middlewares/
-├── routes/
-├── utils/
-└── index.ts
 
 📜 Scripts
 # Development
