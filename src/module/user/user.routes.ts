@@ -66,18 +66,8 @@ router.get(
   UserController.getSingleUser
 );
 
-router.patch(
-  "/update-user/:id",
+router.patch("/update-user/:id", UserController.updateUser);
 
-  authorize("Admin"),
-  UserController.updateUser
-);
-
-router.delete(
-  "/delete-user/:id",
-
-  authorize("Admin"),
-  UserController.deleteUser
-);
+router.delete("/delete-user/:id", UserController.deleteUser);
 
 export const userRoute = router;
