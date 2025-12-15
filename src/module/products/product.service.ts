@@ -77,7 +77,7 @@ const updateProduct = async (id: string, payload: IProduct) => {
 };
 const deleteProduct = async (id: string) => {
   try {
-    const result = await ProductSchema.findByIdAndDelete(id);
+    const result = await ProductSchema.findByIdAndDelete(id, { new: true });
     return result;
   } catch (err) {
     console.log(err);

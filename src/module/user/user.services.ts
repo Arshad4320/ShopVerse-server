@@ -60,7 +60,7 @@ const getSingleUser = async (userId: string) => {
 };
 const updateUser = async (userId: string, payload: IUser) => {
   try {
-    if (payload.password) {
+    if (payload?.password) {
       payload.password = await bcrypt.hash(payload.password, 10);
     }
     const result = await User.findByIdAndUpdate(userId, payload, {
@@ -75,7 +75,7 @@ const updateUser = async (userId: string, payload: IUser) => {
 
 const deleteUser = async (userId: string) => {
   try {
-    const result = await User.findByIdAndDelete(userId);
+    const result = await User.findByIdAndDelete(userId, { new: true });
     return result;
   } catch (err: any) {
     console.log(err);
